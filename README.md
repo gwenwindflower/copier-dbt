@@ -20,14 +20,14 @@ The following features are implemented or planned:
 
 - [x] dbt [Best Practices project structure](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
 - [x] Basic initial dbt Project configuration
-- [x] Warehouse-aware dbt profile configuration for the following options, check out the [dbt docs on warehouse-specific profile configs](https://docs.getdbt.com/docs/core/connect-data-platform/about-core-connections) for more details[^1]:
+- [x] Warehouse-aware dbt profile configuration for the following options, check out the [dbt docs on warehouse-specific profile configs](https://docs.getdbt.com/docs/core/connect-data-platform/about-core-connections) for more details:
   - [x] Snowflake
   - [x] BigQuery
   - [ ] Databricks
   - [ ] Redshift
   - [ ] Postgres
   - [ ] DuckDB
-- [ ] Coverage of all non-password-based authentication methods for all warehouses supported by dbt Cloud
+- [ ] Coverage of all non-password-based authentication methods for the above warehouses[^1]
 - [x] Linting and formatting of SQL with SQLFluff
 - [x] Configurable linting rules in the setup process
 - [ ] Use `sqlfmt` instead of `SQLFluff`

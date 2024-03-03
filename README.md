@@ -105,7 +105,8 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 - Once you've got some models built, try running `dbt build` to run and test your models.
 
 6. Commit it!
-   - The setup process will have initialized a git repository for you, so you can just commit and push your new project to your favorite git hosting service. It will run the pre-commit hooks automatically on commit, so you don't have to worry about linting or formatting your code before you commit it.
+
+- The setup process will have initialized a git repository for you and made an initial commit of the starting state, so you can go right ahead and push your new project to your favorite git hosting service. It will run the pre-commit hooks automatically on commit, so you don't have to worry about linting or formatting your code before you commit it.
 
 ## Tips
 

@@ -30,8 +30,8 @@ The following features are implemented or planned:
 - [ ] Coverage of all non-password-based authentication methods for the above warehouses[^1]
 - [x] Linting and formatting of SQL with SQLFluff
 - [x] Configurable linting rules in the setup process
-- [ ] Use `sqlfmt` instead of `SQLFluff`
-- [ ] Option to not use a SQL linter
+- [ ] Use `sqlfmt` instead of `SQLFluff` for formatting
+- [ ] Option to not use a SQL linter or formatter
 - [x] Modern Python tooling from astral.sh: `ruff` and `uv` for formatting, linting, and dependency management
 - [ ] Choices of Python tooling (e.g. `black` and `pylint` instead of `ruff`)
 - [x] Pre-commit hooks for automated linting, formatting, and fixes on commit

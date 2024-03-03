@@ -1,0 +1,31 @@
+name: ci
+
+on:
+  pull_request:
+    branch: main
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+        python-version: [3.8, 3.12]
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv and requirements
+        run: |
+          python -m pip install uv
+          uv pip install -r template-integration-tests/dev-requirements.txt --system
+
+      - name: Run copier and integration tests
+        run: |
+          copier . ~/test-dir
+          pytest test

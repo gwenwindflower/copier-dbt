@@ -79,6 +79,13 @@ warehouse:
 # Postgres specific configs
 
 # DuckDB specific configs
+duckdb_file_path:
+  type: str
+  default: "./{{ project_slug }}.db"
+  help: |
+    Where do you want to build your duckdb database file? 
+    Strongly suggest the default, which will be automatically gitignored.
+  when: "{{ data_warehouse == 'duckdb' }}"
 
 # Formatting configs
 tab_space_size:
@@ -127,15 +134,15 @@ _tasks:
   - "source {{ virtual_environment_name }}/bin/activate"
   - "python3 -m pip install uv"
   - "source {{ virtual_environment_name }}/bin/activate"
+  - "uv pip compile requirements.in -o requirements.txt"
   - "uv pip install --upgrade pip"
   - "uv pip install -r requirements.txt"
-  - "source {{ virtual_environment_name }}/bin/activate"
   - "mkdir -p ~/.dbt && cat profiles.yml >> ~/.dbt/profiles.yml"
   - "rm profiles.yml"
   - "git init"
-  - "git add -a"
+  - "git add --all"
   - "git commit -m 'Initial commit.'"
-  - "pre-commit install"
+  - "source {{ virtual_environment_name }}/bin/activate && pre-commit install"
 
 _exclude:
   - README.md

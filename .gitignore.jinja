@@ -4,6 +4,9 @@ venv
 env
 {{ virtual_environment_name }}
 
+{% if data_warehouse == 'duckdb'-%}
+{{ duckdb_file_path }}
+{%- endif %}
 target/
 dbt_packages/
 logs/

@@ -41,13 +41,7 @@
   outputs:
     dev:
       type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
-      authenticator: externalbrowser
-      database: {{ database }}
-      warehouse: {{ warehouse }}
-      schema: {{ schema }}
-      threads: {{ thread_count }}
+      path: {{ duckdb_file_path }}
 {%- endif -%}
 {%- if data_warehouse == "postgres" -%}
 {{ profile_name }}:

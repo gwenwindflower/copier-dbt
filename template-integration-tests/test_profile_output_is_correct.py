@@ -20,7 +20,7 @@ def duckdb_answers() -> Dict[str, str]:
 @pytest.fixture
 def snowflake_answers() -> Dict[str, str]:
     return {
-        "project_name": "Aragorn Inc",
+        "project_name": "Aragorn Inc.",
         "data_warehouse": "snowflake",
         "username": "Strider",
         "warehouse": "Narsil",

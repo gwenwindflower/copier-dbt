@@ -6,13 +6,13 @@ project_name:
 
 project_slug:
   type: str
-  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') }}"
+  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') | replace('.', '') }}"
   help: The slugified name of your project.
 
 # Warehouse profile connection configs
 profile_name:
   type: str
-  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') }}"
+  default: {{ project_slug }}
   help: |
     The name of your default dev profile, this is the set of configs for connecting 
     to your warehouse for development.

@@ -33,7 +33,6 @@ The following features are implemented or planned:
 - [ ] Use `sqlfmt` instead of `SQLFluff` for formatting
 - [ ] Option to not use a SQL linter or formatter
 - [x] Modern Python tooling from astral.sh: `ruff` and `uv` for formatting, linting, and dependency management
-- [ ] Choices of Python tooling (e.g. `black` and `pylint` instead of `ruff`)
 - [x] Pre-commit hooks for automated linting, formatting, and fixes on commit
 - [ ] Selection of various pre-commit hooks or not using pre-commit at all
 - [x] A selection of recommended dbt packages:
@@ -44,7 +43,7 @@ The following features are implemented or planned:
   - `dbt-codgen`
 - [ ] A selection of useful macros relevant to most projects (e.g. `limit_in_dev`, `cents_to_dollars`, etc.)
 - [ ] `dbt-codegen` scripts to build sources and staging models from warehouse metadata on project creation
-- [ ] Support generating a new [dbt Cloud](https://cloud.getdbt.com/) project and setting up the dbt Cloud CLI instead of a `profiles.yml` file
+- [ ] Support for generating a new [dbt Cloud](https://cloud.getdbt.com/) project and setting up the dbt Cloud CLI instead of a `profiles.yml` file
 - [ ] CI/CD configurations for various major git hosting services (GitHub Actions, GitLab CI, Bitbucket Pipelines, etc.)
 
 ### Non-goals
@@ -57,6 +56,7 @@ These are the things at present I don't plan on implementing. I'm quite open to 
   - We move the profiles.yml out of the project on template creation, so credentials are never stored or committed to the repo created from this template. Thus, while highly unlikely that this would be a security risk, I just don't feel comfortable supporting it for the time being. I'm very open to hearing from more experienced database security professionals on differing opinions, or any ideas on how to leverage something like environment variables for increased security while still providing a good developer experience. That said, I want to complete the main goals of this project before tackling this.
 - Using `pip` instead of `uv`:
   - `uv` is a _much_ faster and more modern tool for Python package management, and I'd like to encourage its adoption. While I want to provide as much optionality as possible, changing this would be more complicated and I decided to make a choice — that said you're more than welcome to fork this repo and change it to use `pip` if you'd like! Like the rest of the non-goals, once I've accomplished the main goals I'm open to revisiting this.
+- All of the above re `uv` for `ruff` as well. The [astral.sh](https://astral.sh/) tooling is just really great, handles the job of multiple tools in one, and is so fast, I don't think I can be persuaded to go backwards on this one. Now if only somebody would make `ruff` for SQL...
 
 ## Usage
 

@@ -1,4 +1,4 @@
-# 📝🖨️ copier-dbt ⚙️a🧡
+# 📝🖨️ copier-dbt 🧡⚙️
 
 This is a [copier](https://github.com/copier-org/copier) template for dbt projects. It's useful for scaffolding out a basic project structure and configuration with modern tooling quickly.
 

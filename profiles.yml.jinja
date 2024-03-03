@@ -1,4 +1,4 @@
-{%- if data_warehouse == "snowflake" -%}
+{% if data_warehouse == "snowflake" %}
 {{ profile_name }}:
   target: dev
   outputs:
@@ -24,7 +24,6 @@
       database: {{ database }}
       warehouse: {{ warehouse }}
       schema: {{ schema }}
-      threads: {{ thread_count }}
 {%- endif -%}
 {%- if data_warehouse == "redshift" -%}
 {{ profile_name }}:

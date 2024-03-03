@@ -18,8 +18,8 @@ You will need `python3`, `pipx`, and `git` installed to use this template.
 
 The following features are implemented or planned:
 
-- [x] dbt Best Practices project structure
-- [x] Basic dbt project configuration
+- [x] dbt [Best Practices project structure](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
+- [x] Basic initial dbt Project configuration
 - [x] Warehouse-aware dbt profile configuration for the following options, check out the [dbt docs on warehouse-specific profile configs](https://docs.getdbt.com/docs/core/connect-data-platform/about-core-connections) for more details[^1]:
   - [x] Snowflake
   - [x] BigQuery

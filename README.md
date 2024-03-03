@@ -1,6 +1,6 @@
 # 📝🖨️ copier-dbt 🧡⚙️
 
-This is a [copier](https://github.com/copier-org/copier) template for dbt projects. It's useful for scaffolding out a basic project structure and configuration with modern tooling quickly.
+This is a [copier](https://github.com/copier-org/copier) template for [dbt](https://getdbt.com) projects. It's useful for scaffolding out a basic project structure and configuration with modern tooling quickly.
 
 > [!NOTE]
 > This is a very new project. It's so far only been tested using MacOS with BigQuery, DuckDB, and Snowflake. For it to become robust, it needs to be tested on other platforms and with other data warehouses. I very much welcome Issues, Discussions, and Pull Requests to help make this project better. Even if you're not comfortable contributing code, testing it out with various platforms and warehouses and reporting any issues you encounter is _incredibly_ helpful. When we get further along I'll create a support matrix with platform and warehouse coverage detailed.

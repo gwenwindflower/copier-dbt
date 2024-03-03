@@ -129,6 +129,11 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
   alias piup="uv pip install --upgrade pip"
   alias vpi="venva && piup && pirr"
   alias vpci="venva && piup && pc && pirr"
+
+  # Go-to your project, activate the virtual environment, and open it in your text editor
+  alias <something short and memorable>="cd <path to your project> && venva && $EDITOR ."
   ```
+
+  - Notice we can use previously defined aliases in new aliases. For example, `vpci` uses `venva` and `pirr` to update the project's dependencies and install them.
 
   [^1]: I've only selected the most secure and simple authentication method for each warehouse for the time being. You can manually configure more complex and specific authentication methods like password-based authentication, SSO, JSON keys, etc. in the `~/.dbt/profiles.yml` file after the setup process is complete. Wherever possible though, I've opted for _simplicity_ and _security_ — for example the configuration for BigQuery requires that you have installed the `gcloud` CLI and authenticated using OAuth through that. The Redshift authentication method is also the most secure and simple method available, using IAM roles and the `awscli`'s `~/.aws/config` credentials to authenticate. I highly recommend sticking with these methods and using these tools if it's an option.

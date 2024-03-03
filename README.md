@@ -87,7 +87,7 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
      - Install the pre-commit hooks in your project
      - If you feel more comfortable with it, you can delete the tasks section, skip the `--trust` flag, and run the commands manually after the project is created
 
-3. Follow the prompts to configure your project, depending on your answers to certain prompts, different prompts may appear or disappear (e.g. if you choose your `data_warehouse` as `bigquery` you'll get a different set of questions to configure the `profiles.yml`). `copier` will run a series of commands to setup your project after it templates everything, you're encouraged to scan those
+3. Follow the prompts to configure your project, depending on your answers to certain prompts, different prompts may appear or disappear (e.g. if you choose your `data_warehouse` as `bigquery` you'll get a different set of questions to configure the `profiles.yml`).
 
 4. Your project is now ready to use! `cd` into the newly created project and run:
 
@@ -101,4 +101,4 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 
 5. Start building your dbt project!
 
-- Consider using the included `dbt-codegen` package to build some initial sources and staging models from your data warehouse metad
+- Consider using the included `codegen` package to build some initial sources and staging models from your data warehouse metadata

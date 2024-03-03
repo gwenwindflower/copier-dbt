@@ -1,3 +1,4 @@
+# Project configs
 project_name:
   type: str
   default: My Super Cool dbt Project
@@ -8,6 +9,7 @@ project_slug:
   default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') }}"
   help: The slugified name of your project.
 
+# Warehouse profile connection configs
 profile_name:
   type: str
   default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') }}"
@@ -30,15 +32,36 @@ data_warehouse:
 username:
   type: str
   help: The username you log in to your database with.
+  when: "{{ data_warehouse in ['snowflake'] }}"
 
 database:
   type: str
   help: |
-    The name of the database *within* your data platform that you want to build into, called a project in Bigquery.
+    The name or id of the database (or project in BigQuery) *within* your data platform that you want to build into.
 
 schema:
   type: str
-  help: The name of the schema in the database you set, called a dataset in Bigquery.
+  help: |
+    The name of the schema (or dataset in BigQuery) in the database you want to build into.
+
+thread_count:
+  type: int
+  default: 8
+  help: How many threads you want to dbt to run in parallel?
+
+# Snowflake-specific configs
+account_id:
+  type: str
+  help: |
+    This is usually most easily found in the url of your data warehouse's web app.
+    Highly recommended to set this as an env var and put that env var name here not the value itself.
+  when: "{{ data_warehouse == 'snowflake'}}"
+
+user_role:
+  type: str
+  default: transformer
+  help: The default user role to use for development.
+  when: "{{ data_warehouse == 'snowflake' }}"
 
 warehouse:
   type: str
@@ -46,11 +69,18 @@ warehouse:
   help: The name of your default development compute warehouse.
   when: "{{ data_warehouse == 'snowflake' }}"
 
-thread_count:
-  type: int
-  default: 8
-  help: How many threads you want to dbt to run in parallel?
+# BigQuery specific configs
+# There are none for now! `oauth` with `gcloud` is great.
 
+# Databricks specific configs
+
+# Redshift specific configs
+
+# Postgres specific configs
+
+# DuckDB specific configs
+
+# Formatting configs
 tab_space_size:
   type: int
   default: 4
@@ -85,11 +115,13 @@ group_by_and_order_by_style:
     - implicit
     - explicit
 
+# Python configs
 virtual_environment_name:
   type: str
   default: .venv
   help: What do you want your virtual environment to be called?
 
+# Tasks
 _tasks:
   - "python3 -m venv {{ virtual_environment_name }}"
   - "source {{ virtual_environment_name }}/bin/activate"
@@ -100,3 +132,6 @@ _tasks:
   - "source {{ virtual_environment_name }}/bin/activate"
   - "mkdir -p ~/.dbt && cat profiles.yml >> ~/.dbt/profiles.yml"
   - "rm profiles.yml"
+
+_exclude:
+  - README.md

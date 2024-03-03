@@ -18,12 +18,10 @@
   outputs:
     dev:
       type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
-      authenticator: externalbrowser
-      database: {{ database }}
-      warehouse: {{ warehouse }}
-      schema: {{ schema }}
+      project: {{ database }}
+      dataset: {{ schema }}
+      method: oauth
+      threads: {{ thread_count }}
 {%- endif -%}
 {%- if data_warehouse == "redshift" -%}
 {{ profile_name }}:
@@ -33,9 +31,7 @@
       type: {{ data_warehouse }}
       account: {{ account_env_var }}
       user: {{ username }}
-      authenticator: externalbrowser
       database: {{ database }}
-      warehouse: {{ warehouse }}
       schema: {{ schema }}
       threads: {{ thread_count }}
 {%- endif -%}

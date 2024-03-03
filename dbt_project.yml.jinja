@@ -1,0 +1,35 @@
+config-version: 2
+
+name: {{ project_slug }}
+version: "0.0.1"
+require-dbt-version: ">=1.7.8"
+
+# Highly recommend setting this project up on dbt Cloud,
+# then you can use the dbt Cloud CLI, which is very awesome
+# https://docs.getdbt.com/docs/cloud/cloud-cli-installation
+# dbt-cloud:
+#   project-id:
+
+profile: {{ profile_name }}
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["data-tests"]
+seed-paths: ["jaffle-data"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  "dbt_date:time_zone": "America/Los_Angeles"
+
+models:
+  {{ project_slug }}:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

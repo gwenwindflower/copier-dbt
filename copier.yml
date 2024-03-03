@@ -138,6 +138,7 @@ _exclude:
   - ".git"
   - ".DS_STORE"
   - "README.md"
+  - ".venv"
 
 # Pre copy message
 _message_before_copy: |

@@ -27,5 +27,5 @@ jobs:
 
       - name: Run copier and integration tests
         run: |
-          copier . ~/test-dir
+          copier copy . ~/test-dir --trust
           pytest test

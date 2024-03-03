@@ -3,14 +3,14 @@
   target: dev
   outputs:
     dev:
-      type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
+      type: {{ data_warehouse | lower }}
+      account: {{ account_env_var | lower }}
+      user: {{ username | lower }}
       authenticator: externalbrowser
-      database: {{ database }}
-      warehouse: {{ warehouse }}
-      schema: {{ schema }}
-      threads: {{ thread_count }}
+      database: {{ database | lower}}
+      warehouse: {{ warehouse | lower }}
+      schema: {{ schema | lower }}
+      threads: {{ thread_count}}
 {%- endif -%}
 {%- if data_warehouse == "bigquery" -%}
 {{ profile_name }}:
@@ -18,8 +18,8 @@
   outputs:
     dev:
       type: {{ data_warehouse }}
-      project: {{ database }}
-      dataset: {{ schema }}
+      project: {{ database | lower }}
+      dataset: {{ schema | lower }}
       method: oauth
       threads: {{ thread_count }}
 {%- endif -%}
@@ -28,12 +28,7 @@
   target: dev
   outputs:
     dev:
-      type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
-      database: {{ database }}
-      schema: {{ schema }}
-      threads: {{ thread_count }}
+      # coming soon
 {%- endif -%}
 {%- if data_warehouse == "duckdb" -%}
 {{ profile_name }}:
@@ -41,33 +36,19 @@
   outputs:
     dev:
       type: {{ data_warehouse }}
-      path: {{ duckdb_file_path }}
+      path: {{ duckdb_file_path | lower }}
 {%- endif -%}
 {%- if data_warehouse == "postgres" -%}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
-      type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
-      authenticator: externalbrowser
-      database: {{ database }}
-      warehouse: {{ warehouse }}
-      schema: {{ schema }}
-      threads: {{ thread_count }}
+      # coming soon
 {%- endif -%}
 {%- if data_warehouse == "databricks" -%}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
-      type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
-      authenticator: externalbrowser
-      database: {{ database }}
-      warehouse: {{ warehouse }}
-      schema: {{ schema }}
-      threads: {{ thread_count }}
+      # coming soon
 {%- endif -%}

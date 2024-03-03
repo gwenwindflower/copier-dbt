@@ -2,12 +2,17 @@
 
 This is a [copier](https://github.com/copier-org/copier) template for dbt projects. It's useful for scaffolding out a basic project structure and configuration with modern tooling quickly.
 
+> [!NOTE]
+> This is a very new project. It's so far only been tested using MacOS with BigQuery, DuckDB, and Snowflake. For it to become robust, it needs to be tested on other platforms and with other data warehouses. I very much welcome Issues, Discussions, and Pull Requests to help make this project better. Even if you're not comfortable contributing code, testing it out with various platforms and warehouses and reporting any issues you encounter is _incredibly_ helpful. When we get further along I'll create a support matrix with platform and warehouse coverage detailed.
+
+You will need `python3`, `pipx`, and `git` installed to use this template.
+
 ## Table of contents
 
 - [Features](#features)
 - [Non-goals](#non-goals)
 - [Usage](#usage)
-- [Tips and ideas](#tips-and-ideas)
+- [Tips](#tips)
 
 ## Features
 
@@ -69,13 +74,20 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 2. Create a new dbt project from this template:
 
    ```shell
-   copier gh:gwenwindflower/copier-dbt <path/to/project_name>
+   copier gh:gwenwindflower/copier-dbt <path/to/project_name> --trust
    ```
 
    - `gh:` tells copier to use a GitHub repository as the source for the template
    - The directory you specify is where the new project will be created, don't create it beforehand
+   - `copier` will run a series of commands to set up your project after it templates everything. These are listed in the `copier.yml` at the bottom in the `_tasks` list. I highly encourage you to look through these before and make sure you really do trust and understand them before using the `--trust` flag above that will allow them to run. These commands are very straightforward and standard, but letting somebody's code run commands on your machine should always be taken seriously. In brief they will do the following (but seriously go look at the file):
+     - Create and activate a virtual environment for the project in your newly templated project directory
+     - Install the project's dependencies
+     - Put the contents of the `profiles.yml` file in the correct place in your home directory then remove the file from your project for security
+     - Initialize a new git repo in your project and make an initial commit
+     - Install the pre-commit hooks in your project
+     - If you feel more comfortable with it, you can delete the tasks section, skip the `--trust` flag, and run the commands manually after the project is created
 
-3. Follow the prompts to configure your project, depending on your answers to certain prompts, different prompts may appear or disappear (e.g. if you choose your `data_warehouse` as `bigquery` you'll get a different set of questions to configure the `profiles.yml`)
+3. Follow the prompts to configure your project, depending on your answers to certain prompts, different prompts may appear or disappear (e.g. if you choose your `data_warehouse` as `bigquery` you'll get a different set of questions to configure the `profiles.yml`). `copier` will run a series of commands to setup your project after it templates everything, you're encouraged to scan those
 
 4. Your project is now ready to use! `cd` into the newly created project and run:
 
@@ -95,10 +107,12 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 6. Commit it!
    - The setup process will have initialized a git repository for you, so you can just commit and push your new project to your favorite git hosting service. It will run the pre-commit hooks automatically on commit, so you don't have to worry about linting or formatting your code before you commit it.
 
-## Tips and ideas
+## Tips
 
-- If you're looking to just explore dbt, try using some of the public datasets potentially available on your platform. Most have a lot of cool ones! For example, BigQuery has a public dataset for the New York City Taxi and Limousine Commission that's really fun to play with.
+- If you're looking to just explore dbt, try using some of the public datasets potentially available on your platform. Most have a lot of cool ones! For example, BigQuery has a public dataset for the New York City Taxi and Limousine Commission that's really fun to play with. If you use DuckDB and connect to MotherDuck they have a bunch of Hacker News data that's quite fun to play with.
 - This project, thanks to the incredible `uv` and it's native support of `pip-tools`' `pip compile` functionality, uses a more readable `requirements.in` file to define top-level dependencies, which then compiles that to a highly detailed `requirements.txt` file which maps all sub-dependencies to the top-level packages they are required by. This makes it much easier to deal with versions and upgrading. Also `uv `is wildly fast. Take a peek at these files to get the gist, and check out [`uv`'s documentation](https://github.com/astral-sh/uv) to learn more.
+- If you decide you like `uv`, it may be a good idea to install it globally so you can use it for initializing new projects and other things. You can find the installation instructions in the [ `uv` documentation ](https://github.com/astral-sh/uv).
+- Always make sure you're installing Python packages in a virtual environment to avoid dependency conflicts(or using `pipx` if it really is supposed to be global). Not to be a broken record, but _yet another_ cool thing `uv` does is always install your packages into a virtual environment by default, even if it's not activated (unlike `pip`), and it will prompt you to create one if one doesn't exist yet. This comes in _super_ handy to save you from accidentally installing a project's dependencies globally.
   - If you need to update any dependencies you can change the version(s) in the `requirements.in` file and run `uv pip compile requirements.in -o requirements.txt` to compile an updated `requirements.txt` file. Then run `uv pip install -r requirements.txt` to install the updated dependencies.
 - If you don't want use a cloud warehouse, I recommend using `duckdb` as your local warehouse. It's a really neat database that's super fast on medium-sized data and has one of the best SQL syntaxes in the game right now. It can run completely locally, but you can also easily wire it up to cloud storage like S3 or GCS, or even a cloud warehouse SaaS called [MotherDuck](https://motherduck.com/).
 - Typing long commands is a bummer, if you plan on doing a lot of Python and dbt development, I highly recommend setting up _*aliases*_ for common commands in your shell configuration (`~/.bashrc`, `~/.zshrc`, etc.). For example, you could add the following to your shell configuration to make running dbt and python commands easier (just make sure they don't conflict with existing aliases or commands, customize to your liking!):

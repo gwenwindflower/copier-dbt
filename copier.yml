@@ -1,7 +1,7 @@
 # Project configs
 project_name:
   type: str
-  default: My Super Cool dbt Project
+  default: My dbt Project
   help: The name of your project or organization.
 
 project_slug:
@@ -132,6 +132,10 @@ _tasks:
   - "source {{ virtual_environment_name }}/bin/activate"
   - "mkdir -p ~/.dbt && cat profiles.yml >> ~/.dbt/profiles.yml"
   - "rm profiles.yml"
+  - "git init"
+  - "git add -a"
+  - "git commit -m 'Initial commit.'"
+  - "pre-commit install"
 
 _exclude:
   - README.md

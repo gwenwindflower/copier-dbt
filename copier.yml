@@ -128,6 +128,47 @@ virtual_environment_name:
   default: .venv
   help: What do you want your virtual environment to be called?
 
+# Files to exclude from template
+_exclude:
+  - "template-integration-tests"
+  - "copier.yml"
+  - "~*"
+  - "*.py[co]"
+  - "__pycache__"
+  - ".git"
+  - ".DS_STORE"
+  - "README.md"
+  - ".venv"
+
+# Pre copy message
+_message_before_copy: |
+  Let's make a new dbt project in {{ _copier_conf.dst_path }}. ✨
+  We'll ask you some questions, you will fill in the prompts,
+  and we'll have you set up in no time.
+
+  If at any time you change your mind just Ctrl+C to cancel,
+  and nothing will get created. You can also cancel and pass
+  a --pretend flag to do a run-through first before the real thing.
+
+# Post cleanup message
+_message_after_copy: |
+  Your project "{{ project_name }}" has been created successfully! 🎉
+
+  Next steps:
+
+  1. Change directory to the project root:
+
+    $ cd {{ _copier_conf.dst_path }}
+
+  2. Ensure the virtual environment is active:
+
+    $ source {{ virtual_environment_name }}/bin/activate
+
+  3. Run initial dbt build:
+
+    $ dbt deps
+    $ dbt build
+
 # Tasks
 _tasks:
   - "python3 -m venv {{ virtual_environment_name }}"
@@ -144,5 +185,3 @@ _tasks:
   - "git commit -m 'Initial commit.'"
   - "source {{ virtual_environment_name }}/bin/activate && pre-commit install"
 
-_exclude:
-  - README.md

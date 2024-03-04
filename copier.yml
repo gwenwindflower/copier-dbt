@@ -136,6 +136,7 @@ _exclude:
   - "*.py[co]"
   - "__pycache__"
   - ".git"
+  - ".github"
   - ".DS_STORE"
   - "README.md"
   - ".venv"

@@ -13,6 +13,8 @@ You will need `python3`, [`pipx`](https://github.com/pypa/pipx), and `git` insta
 - [Non-goals](#non-goals)
 - [Usage](#usage)
 - [Tips](#tips)
+  - [Learning resources](#learning-resources)
+  - [Improving the command line experience](#improving-the-command-line-experience)
 
 ## Features
 
@@ -125,13 +127,15 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 
 ### Learning resources
 
-- If you're new to dbt, SQL, or Jinja, I highly recommend the following learning resources:
-  - [dbt Learn](https://learn.getdbt.com/) - dbt Lab's official learning platform, with a bunch of great free courses to get you started
-  - [Mode's SQL Tutorial](https://mode.com/sql-tutorial) - IMO the best free resource to learn SQL from the ground up
-  - [Jinja's official documentation](https://jinja.palletsprojects.com/en/3.0.x/templates/) - specifically the Template Designer Docs in the link. Jinja is a really powerful templating language that dbt and many other projects use. Once you get the basics of dbt and SQL down, learning Jinja will take your dbt projects to the next level.
-  - [dbt Labs' **How we structure our dbt Projects Guide**](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview) - the standard resource covering the best way to structure your dbt projects and why. This template follows these guidelines.
-    - Disclaimer re this and the next point: I work for dbt Labs, I'm very biased! 🤷🏻‍♀️ Also I wrote this guide 😹.
-- If you're looking to deploy the dbt project you create with this template, the best way is with dbt Cloud. It includes advanced orchestration, a cloud-based IDE, an interactive visual Explorer with column-level lineage, flexible alerts, [auto-deferral](https://docs.getdbt.com/blog/defer-to-prod), version control, and a lot more. It's the best way to get a dbt project into production quickly and easily, and to get multiple people working on the same project. If you're interested in trying it out, you can [sign up for a free trial](https://getdbt.com/signup) and get started in minutes.
+If you're new to dbt, SQL, or Jinja, I highly recommend the following learning resources:
+- [dbt Learn](https://learn.getdbt.com/) - dbt Lab's official learning platform, with a bunch of great free courses to get you started
+- [Mode's SQL Tutorial](https://mode.com/sql-tutorial) - IMO the best free resource to learn SQL from the ground up
+- [Jinja's official documentation](https://jinja.palletsprojects.com/en/3.0.x/templates/) - specifically the Template Designer Docs in the link. Jinja is a really powerful templating language that dbt and many other projects use. Once you get the basics of dbt and SQL down, learning Jinja will take your dbt projects to the next level.
+  - [dbt Labs' **How we structure our dbt projects** guide](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview) - the standard resource covering the best way to structure your dbt projects and why. This template follows these guidelines[^2].
+
+If you're looking to deploy the dbt project you create with this template, the best way is with [dbt Cloud](https://cloud.getdbt.com/)[^2]. It includes advanced orchestration, a cloud-based IDE, an interactive visual Explorer with column-level lineage, flexible alerts, [auto-deferral](https://docs.getdbt.com/blog/defer-to-prod), version control, and a lot more. It's the best way to get a dbt project into production quickly, easily, and reliably — and to get multiple people with varied knowledge working on the same project efficiently. If you're interested in trying it out, you can [sign up for a free trial](https://getdbt.com/signup) and get started in minutes.
+
+[^2] I work for dbt Labs, I'm very biased! 🤷🏻‍♀️ Also I wrote the **How we structure our dbt projects** guide 😹.
 
 ### Improving the command line experience
 

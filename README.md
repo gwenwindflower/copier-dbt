@@ -98,4 +98,60 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
    ```
 
    - `dbt deps` will install the dbt packages included in the template
-   - `dbt debug` will run a series of tests to ensure that your dbt project is configured correctly and conn
+   - `dbt debug` will run a series of tests to ensure that your dbt project is configured correctly and connects to your data warehouse properly
+
+5. Start building your dbt project!
+
+- Consider using the included `dbt-codegen` package to build some initial sources and staging models from your data warehouse metadata.
+- Once you've got some models built, try running `dbt build` to run and test your models.
+
+6. Push it!
+
+- The setup process will have initialized a git repository for you and made an initial commit of the starting state, so you can go right ahead and push your new project to your favorite git hosting service. It will run the pre-commit hooks automatically on commit, so you don't have to worry about linting or formatting your code before you commit it.
+
+## Tips
+
+- If you're looking to just explore dbt, try using some of the public datasets potentially available on your platform. Most have a lot of cool ones! For example, BigQuery has a public dataset for the New York City Taxi and Limousine Commission that's really fun to play with. If you use DuckDB and connect to MotherDuck they have a bunch of Hacker News data that's quite fun to play with.
+
+- This project, thanks to the incredible `uv` and it's native support of `pip-tools`' `pip compile` functionality, uses a more readable `requirements.in` file to define top-level dependencies, which then compiles that to a highly detailed `requirements.txt` file which maps all sub-dependencies to the top-level packages they are required by. This makes it much easier to deal with versions and upgrading. Also `uv `is wildly fast. Take a peek at these files to get the gist, and check out [`uv`'s documentation](https://github.com/astral-sh/uv) to learn more.
+
+- If you decide you like `uv`, it may be a good idea to install it globally so you can use it for initializing new projects and other things. You can find the installation instructions in the [ `uv` documentation ](https://github.com/astral-sh/uv).
+
+- Always make sure you're installing Python packages in a virtual environment to avoid dependency conflicts(or using `pipx` if it really is supposed to be global). Not to be a broken record, but _yet another_ cool thing `uv` does is always install your packages into a virtual environment by default, even if it's not activated (unlike `pip`), and it will prompt you to create one if one doesn't exist yet. This comes in _super_ handy to save you from accidentally installing a project's dependencies globally.
+
+  - If you need to update any dependencies you can change the version(s) in the `requirements.in` file and run `uv pip compile requirements.in -o requirements.txt` to compile an updated `requirements.txt` file. Then run `uv pip install -r requirements.txt` to install the updated dependencies.
+
+- If you don't want use a cloud warehouse, I recommend using `duckdb` as your local warehouse. It's a really neat database that's super fast on medium-sized data and has one of the best SQL syntaxes in the game right now. It can run completely locally, but you can also easily wire it up to cloud storage like S3 or GCS, or even a cloud warehouse SaaS called [MotherDuck](https://motherduck.com/).
+
+- Typing long commands is a bummer, if you plan on doing a lot of Python and dbt development, I highly recommend setting up _*aliases*_ for common commands in your shell configuration (`~/.bashrc`, `~/.zshrc`, etc.). For example, you could add the following to your shell configuration to make running dbt and python commands easier (just make sure they don't conflict with existing aliases or commands, customize to your liking!):
+  ```shell
+  export EDITOR=<your favorite text editor>
+  # dbt alias suggestions
+  alias dbtp="$EDITOR ~/.dbt/profiles.yml"
+  alias db="dbt build"
+  alias dbs="dbt build -s"
+  alias dt="dbt test"
+  alias dts="dbt test -s"
+  alias dr="dbt run"
+  alias drs="dbt run -s"
+  alias dp="dbt parse"
+  alias dmv="dbt parse && mf validate-configs"
+  # Python alias suggestions
+  alias python="python3"
+  alias venv="uv venv .venv"
+  alias va="source .venv/bin/activate"
+  alias venva="venv && va"
+  alias pi="uv pip"
+  alias pir="uv pip install -r"
+  alias pirr="uv pip install -r requirements.txt"
+  alias pc="uv pip compile requirements.in -o requirements.txt"
+  alias piup="uv pip install --upgrade pip"
+  alias vpi="venva && piup && pirr"
+  alias vpci="venva && piup && pc && pirr"
+  # Go-to your project, activate the virtual environment, and open it in your text editor
+  alias <something short and memorable>="cd <path to your project> && venva && $EDITOR ."
+  ```
+  - Notice we can use previously defined aliases in new aliases. For example, `vpci` uses `venva` and `pirr` to update the project's dependencies and install them.
+
+[^1]: I've only selected the most secure and simple authentication method for each warehouse for the time being. You can manually configure more complex and specific authentication methods like password-based authentication, SSO, JSON keys, etc. in the `~/.dbt/profiles.yml` file after the setup process is complete. Wherever possible though, I've opted for _simplicity_ and _security_ — for example the configuration for BigQuery requires that you have installed the `gcloud` CLI and authenticated using OAuth through that. The Redshift authentication method is also the most secure and simple method available, using IAM roles and the `awscli`'s `~/.aws/config` credentials to authenticate. I highly recommend sticking with these methods and using these tools if it's an option.
+

@@ -1,0 +1,10 @@
+
+legoalas_corp:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      project: mirkwood
+      dataset: archers
+      method: oauth
+      threads: 8

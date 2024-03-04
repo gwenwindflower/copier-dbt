@@ -12,7 +12,7 @@
       schema: {{ schema | lower }}
       threads: {{ thread_count}}
 {%- endif -%}
-{%- if data_warehouse == "bigquery" -%}
+{% if data_warehouse == "bigquery" %}
 {{ profile_name }}:
   target: dev
   outputs:
@@ -23,14 +23,14 @@
       method: oauth
       threads: {{ thread_count }}
 {%- endif -%}
-{%- if data_warehouse == "redshift" -%}
+{% if data_warehouse == "redshift" %}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
       # coming soon
 {%- endif -%}
-{%- if data_warehouse == "duckdb" -%}
+{% if data_warehouse == "duckdb" %}
 {{ profile_name }}:
   target: dev
   outputs:
@@ -41,14 +41,14 @@
       schema: {{ schema | lower }}
       threads: {{ thread_count }}
 {%- endif -%}
-{%- if data_warehouse == "postgres" -%}
+{% if data_warehouse == "postgres" %}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
       # coming soon
 {%- endif -%}
-{%- if data_warehouse == "databricks" -%}
+{% if data_warehouse == "databricks" %}
 {{ profile_name }}:
   target: dev
   outputs:

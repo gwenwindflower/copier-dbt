@@ -23,12 +23,13 @@ warehouse_answers: Dict[str, Dict[str, str]] = {
     },
     "snowflake": {
         "project_name": "Aragorn Inc.",
+        "account_id": "minas_tirith.us-east-1",
         "data_warehouse": "snowflake",
         "username": "Strider",
         "warehouse": "Narsil",
         "role": "King",
         "database": "gondor",
-        "schema": "minas_tirith",
+        "schema": "rangers",
     },
     "bigquery": {
         "project_name": "Legoalas Corp",
@@ -41,14 +42,11 @@ warehouse_answers: Dict[str, Dict[str, str]] = {
 
 
 def _check_profiles(warehouse):
-    if os.path.exists(TEST_BUILD_DIR):
-        shutil.rmtree(TEST_BUILD_DIR)
-
     data = warehouse_answers[warehouse]
 
     copier.run_copy(
         str(PROJECT_ROOT),
-        str(TEST_BUILD_DIR),
+        str(TEST_BUILD_DIR / warehouse),
         data=data,
         defaults=True,
         unsafe=True,
@@ -56,15 +54,16 @@ def _check_profiles(warehouse):
 
     with open(TEST_EXPECT / f"{warehouse}_profile.yml", "r") as f:
         expected_output = yaml.safe_load(f)
-    with open(TEST_BUILD_DIR / "profiles.yml", "r") as f:
+    with open(TEST_BUILD_DIR / warehouse / "profiles.yml", "r") as f:
         actual_output = yaml.safe_load(f)
 
     diff = DeepDiff(expected_output, actual_output)
     assert diff == {}, f"Differences: {diff}"
 
-    shutil.rmtree(TEST_BUILD_DIR)
-
 
 def test_profile_output_is_correct():
+    if os.path.exists(TEST_BUILD_DIR):
+        shutil.rmtree(TEST_BUILD_DIR)
+
     for warehouse in warehouse_answers:
         _check_profiles(warehouse)

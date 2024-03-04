@@ -137,7 +137,7 @@ If you're looking to deploy the dbt project you create with this template, the b
 
 ### Improving the command line experience
 
-- There are some really useful command line tools for folks developing dbt projects locally (meaning they're using SQL, Jinja, Python, and the command line a lot). Here are a few I recommend:
+There are some really useful command line tools for folks developing dbt projects locally (meaning they're using SQL, Jinja, Python, and the command line a lot). Here are a few I recommend:
   - [zoxide](https://github.com/ajeetdsouza/zoxide) - a faster, easier-to-use, and more flexible replacement for the `cd` command that learns your habits and saves you a lot of typing with a combination of fuzzy search and frecency (frequency + recency) sorting of your directory changing history
   - [`rip`](https://github.com/nivekuil/rip) - a safer and easier-to-use replacement for the `rm` command that moves files to the trash instead of deleting them and lets you recover them if you make a mistake
   - [fzf](https://github.com/junegunn/fzf) - a fuzzy finder that makes it easy to search through your command history, files, and directories super fast
@@ -149,7 +149,7 @@ If you're looking to deploy the dbt project you create with this template, the b
   - [starship](https://starship.rs/) - a really cool and fast shell prompt that's highly customizable (using TOML so it's very easy and readable) and has a lot of cool features, and the default settings are great if you don't want to bother customizing it
   - [kitty](https://sw.kovidgoyal.net/kitty/) - a fast, feature-rich (great font, image, and mouse support, for example), and highly customizable terminal emulator that's a joy to use
 
-- Typing long commands is a bummer, if you plan on doing a lot of Python and dbt development, I highly recommend setting up _*aliases*_ for common commands in your shell configuration (`~/.bashrc`, `~/.zshrc`, etc.). For example, you could add the following to your shell configuration to make running dbt and python commands easier (just make sure they don't conflict with existing aliases or commands, customize to your liking!):
+Typing long commands is a bummer, if you plan on doing a lot of Python and dbt development, I highly recommend setting up _*aliases*_ for common commands in your shell configuration (`~/.bashrc`, `~/.zshrc`, etc.). For example, you could add the following to your shell configuration to make running dbt and python commands easier (just make sure they don't conflict with existing aliases or commands, customize to your liking!):
   ```shell
   export EDITOR=<your favorite text editor>
   # dbt alias suggestions

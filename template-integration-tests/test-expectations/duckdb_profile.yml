@@ -1,0 +1,9 @@
+lothlorien_enterprises:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ./lothlorien.db
+      database: mallorn
+      schema: flets
+      threads: 8

@@ -37,6 +37,9 @@
     dev:
       type: {{ data_warehouse }}
       path: {{ duckdb_file_path | lower }}
+      database: {{ database | lower }}
+      schema: {{ schema | lower }}
+      threads: {{ thread_count }}
 {%- endif -%}
 {%- if data_warehouse == "postgres" -%}
 {{ profile_name }}:

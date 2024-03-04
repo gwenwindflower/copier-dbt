@@ -117,11 +117,35 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 
 - If you decide you like `uv`, it may be a good idea to install it globally so you can use it for initializing new projects and other things. You can find the installation instructions in the [ `uv` documentation ](https://github.com/astral-sh/uv).
 
-- Always make sure you're installing Python packages in a virtual environment to avoid dependency conflicts(or using `pipx` if it really is supposed to be global). Not to be a broken record, but _yet another_ cool thing `uv` does is always install your packages into a virtual environment by default, even if it's not activated (unlike `pip`), and it will prompt you to create one if one doesn't exist yet. This comes in _super_ handy to save you from accidentally installing a project's dependencies globally.
+- Always make sure you're installing Python packages in a virtual environment to avoid dependency conflicts (or using `pipx` if it really is supposed to be global). Not to be a broken record, but _yet another_ cool thing `uv` does is always install your packages into a virtual environment by default, even if it's not activated (unlike `pip`), and it will prompt you to create one if one doesn't exist yet. This comes in _super_ handy to save you from accidentally installing a project's dependencies globally.
 
   - If you need to update any dependencies you can change the version(s) in the `requirements.in` file and run `uv pip compile requirements.in -o requirements.txt` to compile an updated `requirements.txt` file. Then run `uv pip install -r requirements.txt` to install the updated dependencies.
 
-- If you don't want use a cloud warehouse, I recommend using `duckdb` as your local warehouse. It's a really neat database that's super fast on medium-sized data and has one of the best SQL syntaxes in the game right now. It can run completely locally, but you can also easily wire it up to cloud storage like S3 or GCS, or even a cloud warehouse SaaS called [MotherDuck](https://motherduck.com/).
+- If you don't want to use a cloud warehouse, I recommend using `duckdb` as your local warehouse. It's a really neat database that's super fast on medium-sized data and has one of the best SQL syntaxes in the game right now. It can run completely locally, but you can also easily wire it up to cloud storage like S3 or GCS, or even a cloud warehouse SaaS called [MotherDuck](https://motherduck.com/).
+
+### Learning resources
+
+- If you're new to dbt, SQL, or Jinja, I highly recommend the following learning resources:
+  - [dbt Learn](https://learn.getdbt.com/) - dbt Lab's official learning platform, with a bunch of great free courses to get you started
+  - [Mode's SQL Tutorial](https://mode.com/sql-tutorial) - IMO the best free resource to learn SQL from the ground up
+  - [Jinja's official documentation](https://jinja.palletsprojects.com/en/3.0.x/templates/) - specifically the Template Designer Docs in the link. Jinja is a really powerful templating language that dbt and many other projects use. Once you get the basics of dbt and SQL down, learning Jinja will take your dbt projects to the next level.
+  - [dbt Labs' **How we structure our dbt Projects Guide**](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview) - the standard resource covering the best way to structure your dbt projects and why. This template follows these guidelines.
+    - Disclaimer re this and the next point: I work for dbt Labs, I'm very biased! 🤷🏻‍♀️ Also I wrote this guide 😹.
+- If you're looking to deploy the dbt project you create with this template, the best way is with dbt Cloud. It includes advanced orchestration, a cloud-based IDE, an interactive visual Explorer with column-level lineage, flexible alerts, [auto-deferral](https://docs.getdbt.com/blog/defer-to-prod), version control, and a lot more. It's the best way to get a dbt project into production quickly and easily, and to get multiple people working on the same project. If you're interested in trying it out, you can [sign up for a free trial](https://getdbt.com/signup) and get started in minutes.
+
+### Improving the command line experience
+
+- There are some really useful command line tools for folks developing dbt projects locally (meaning they're using SQL, Jinja, Python, and the command line a lot). Here are a few I recommend:
+  - [zoxide](https://github.com/ajeetdsouza/zoxide) - a faster, easier-to-use, and more flexible replacement for the `cd` command that learns your habits and saves you a lot of typing with a combination of fuzzy search and frecency (frequency + recency) sorting of your directory changing history
+  - [`rip`](https://github.com/nivekuil/rip) - a safer and easier-to-use replacement for the `rm` command that moves files to the trash instead of deleting them and lets you recover them if you make a mistake
+  - [fzf](https://github.com/junegunn/fzf) - a fuzzy finder that makes it easy to search through your command history, files, and directories super fast
+  - [bat](https://github.com/sharkdp/bat) - a `cat` replacement that adds syntax highlighting and line numbers, alias it to `cat` and never look back
+  - [eza](https://github.com/eza-community/eza) - a faster and more powerful replacement for the `ls` command
+  - [fd](https://github.com/sharkdp/fd) - a faster and easier-to-use replacement for the `find` command
+  - [ripgrep](https://github.com/BurntSushi/ripgrep) - a much faster and more powerful replacement for the `grep` command
+  - [atuin](https://github.com/atuinsh/atuin) - a more powerful and magical shell history tool, with fuzzy search and a lot of other cool features
+  - [starship](https://starship.rs/) - a really cool and fast shell prompt that's highly customizable (using TOML so it's very easy and readable) and has a lot of cool features, and the default settings are great if you don't want to bother customizing it
+  - [kitty](https://sw.kovidgoyal.net/kitty/) - a fast, feature-rich (great font, image, and mouse support, for example), and highly customizable terminal emulator that's a joy to use
 
 - Typing long commands is a bummer, if you plan on doing a lot of Python and dbt development, I highly recommend setting up _*aliases*_ for common commands in your shell configuration (`~/.bashrc`, `~/.zshrc`, etc.). For example, you could add the following to your shell configuration to make running dbt and python commands easier (just make sure they don't conflict with existing aliases or commands, customize to your liking!):
   ```shell
@@ -152,6 +176,7 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
   alias <something short and memorable>="cd <path to your project> && venva && $EDITOR ."
   ```
   - Notice we can use previously defined aliases in new aliases. For example, `vpci` uses `venva` and `pirr` to update the project's dependencies and install them.
+
 
 [^1]: I've only selected the most secure and simple authentication method for each warehouse for the time being. You can manually configure more complex and specific authentication methods like password-based authentication, SSO, JSON keys, etc. in the `~/.dbt/profiles.yml` file after the setup process is complete. Wherever possible though, I've opted for _simplicity_ and _security_ — for example the configuration for BigQuery requires that you have installed the `gcloud` CLI and authenticated using OAuth through that. The Redshift authentication method is also the most secure and simple method available, using IAM roles and the `awscli`'s `~/.aws/config` credentials to authenticate. I highly recommend sticking with these methods and using these tools if it's an option.
 

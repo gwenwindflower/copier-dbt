@@ -12,7 +12,7 @@ project_slug:
 # Warehouse profile connection configs
 profile_name:
   type: str
-  default: {{ project_slug }}
+  default: "{{ project_slug }}"
   help: |
     The name of your default dev profile, this is the set of configs for connecting 
     to your warehouse for development.

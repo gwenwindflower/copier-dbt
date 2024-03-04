@@ -128,14 +128,12 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 ### Learning resources
 
 If you're new to dbt, SQL, or Jinja, I highly recommend the following learning resources:
-- [dbt Learn](https://learn.getdbt.com/) - dbt Lab's official learning platform, with a bunch of great free courses to get you started
+- [dbt Learn](https://learn.getdbt.com/) - dbt Labs' official learning platform, with a bunch of great free courses to get you started
 - [Mode's SQL Tutorial](https://mode.com/sql-tutorial) - IMO the best free resource to learn SQL from the ground up
 - [Jinja's official documentation](https://jinja.palletsprojects.com/en/3.0.x/templates/) - specifically the Template Designer Docs in the link. Jinja is a really powerful templating language that dbt and many other projects use. Once you get the basics of dbt and SQL down, learning Jinja will take your dbt projects to the next level.
-  - [dbt Labs' **How we structure our dbt projects** guide](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview) - the standard resource covering the best way to structure your dbt projects and why. This template follows these guidelines[^2].
+- [dbt Labs' **How we structure our dbt projects** guide](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview) - the standard resource covering the best way to structure your dbt projects and why. This template follows these guidelines.[^2]
 
-If you're looking to deploy the dbt project you create with this template, the best way is with [dbt Cloud](https://cloud.getdbt.com/)[^2]. It includes advanced orchestration, a cloud-based IDE, an interactive visual Explorer with column-level lineage, flexible alerts, [auto-deferral](https://docs.getdbt.com/blog/defer-to-prod), version control, and a lot more. It's the best way to get a dbt project into production quickly, easily, and reliably — and to get multiple people with varied knowledge working on the same project efficiently. If you're interested in trying it out, you can [sign up for a free trial](https://getdbt.com/signup) and get started in minutes.
-
-[^2] I work for dbt Labs, I'm very biased! 🤷🏻‍♀️ Also I wrote the **How we structure our dbt projects** guide 😹.
+If you're looking to deploy the dbt project you create with this template, the best way is with [dbt Cloud](https://cloud.getdbt.com/).[^2] It includes advanced orchestration, a cloud-based IDE, an interactive visual Explorer with column-level lineage, flexible alerts, [auto-deferral](https://docs.getdbt.com/blog/defer-to-prod), version control, and a lot more. It's the best way to get a dbt project into production quickly, easily, and reliably — and to get multiple people with varied knowledge working on the same project efficiently. If you're interested in trying it out, you can [sign up for a free trial](https://getdbt.com/signup) and get started in minutes.
 
 ### Improving the command line experience
 
@@ -184,3 +182,4 @@ If you're looking to deploy the dbt project you create with this template, the b
 
 [^1]: I've only selected the most secure and simple authentication method for each warehouse for the time being. You can manually configure more complex and specific authentication methods like password-based authentication, SSO, JSON keys, etc. in the `~/.dbt/profiles.yml` file after the setup process is complete. Wherever possible though, I've opted for _simplicity_ and _security_ — for example the configuration for BigQuery requires that you have installed the `gcloud` CLI and authenticated using OAuth through that. The Redshift authentication method is also the most secure and simple method available, using IAM roles and the `awscli`'s `~/.aws/config` credentials to authenticate. I highly recommend sticking with these methods and using these tools if it's an option.
 
+[^2]: I work for dbt Labs, I'm very biased! 🤷🏻‍♀️ Also I wrote the **How we structure our dbt projects** guide, so also, y'know, maybe a bit biased there too 😹.

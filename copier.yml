@@ -157,11 +157,17 @@ _exclude:
   - "~*"
   - "*.py[co]"
   - "__pycache__"
+  - ".pytest_cache"
   - ".git"
   - ".github"
   - ".DS_STORE"
   - "README.md"
   - ".venv"
+  - ".env"
+  - "venv"
+  - "env"
+  - "dev-requirements.txt"
+  - "dev-requirements.in"
 
 # Pre copy message
 _message_before_copy: |

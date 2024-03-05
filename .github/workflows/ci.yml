@@ -23,9 +23,7 @@ jobs:
       - name: Install uv and requirements
         run: |
           python -m pip install uv
-          uv pip install -r template-integration-tests/dev-requirements.txt --system
+          uv pip install -r dev-requirements.txt --system
 
-      - name: Run copier and integration tests
-        run: |
-          copier copy . ~/test-dir --trust
-          pytest test
+      - name: Run integration tests
+        run: pytest template-integration-tests

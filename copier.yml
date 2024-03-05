@@ -6,13 +6,13 @@ project_name:
 
 project_slug:
   type: str
-  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') }}"
+  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') | replace('.', '') }}"
   help: The slugified name of your project.
 
 # Warehouse profile connection configs
 profile_name:
   type: str
-  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') }}"
+  default: "{{ project_slug }}"
   help: |
     The name of your default dev profile, this is the set of configs for connecting 
     to your warehouse for development.
@@ -122,11 +122,33 @@ group_by_and_order_by_style:
     - implicit
     - explicit
 
+# Task options
+virtual_environment:
+  type: bool
+  default: False
+  help: |
+    Do you want copier to initialize and activate a virtual environment,
+    and install dependencies?
+
+init_repo:
+  type: bool
+  default: False
+  help: |
+    Do you want copier to initialize and make a first commit to a fresh git repo?
+
+move_profile:
+  type: bool
+  default: False
+  help: |
+    Do you want copier to move the contents of your generated `profiles.yml` file
+    to the appropriate place in your home directory (`~/.dbt/profiles.yml`)?
+
 # Python configs
 virtual_environment_name:
   type: str
   default: .venv
   help: What do you want your virtual environment to be called?
+  when: "{{ virtual_environment }}"
 
 # Files to exclude from template
 _exclude:
@@ -135,10 +157,17 @@ _exclude:
   - "~*"
   - "*.py[co]"
   - "__pycache__"
+  - ".pytest_cache"
   - ".git"
+  - ".github"
   - ".DS_STORE"
   - "README.md"
   - ".venv"
+  - ".env"
+  - "venv"
+  - "env"
+  - "dev-requirements.txt"
+  - "dev-requirements.in"
 
 # Pre copy message
 _message_before_copy: |
@@ -171,17 +200,16 @@ _message_after_copy: |
 
 # Tasks
 _tasks:
-  - "python3 -m venv {{ virtual_environment_name }}"
-  - "source {{ virtual_environment_name }}/bin/activate"
-  - "python3 -m pip install uv"
-  - "source {{ virtual_environment_name }}/bin/activate"
-  - "uv pip compile requirements.in -o requirements.txt"
-  - "uv pip install --upgrade pip"
-  - "uv pip install -r requirements.txt"
-  - "mkdir -p ~/.dbt && cat profiles.yml >> ~/.dbt/profiles.yml"
-  - "rm profiles.yml"
-  - "git init"
-  - "git add --all"
-  - "git commit -m 'Initial commit.'"
-  - "source {{ virtual_environment_name }}/bin/activate && pre-commit install"
-
+  - "{% if virtual_environment %} python3 -m venv {{ virtual_environment_name }} {% endif %}"
+  - "{% if virtual_environment %} source {{ virtual_environment_name }}/bin/activate {% endif %}"
+  - "{% if virtual_environment %} python3 -m pip install --upgrade pip {% endif %}"
+  - "{% if virtual_environment %} python3 -m pip install uv {% endif %}"
+  - "{% if virtual_environment %} source {{ virtual_environment_name }}/bin/activate {% endif %}"
+  - "{% if virtual_environment %} uv pip compile requirements.in -o requirements.txt {% endif %}"
+  - "{% if virtual_environment %} uv pip install -r requirements.txt {% endif %}"
+  - "{% if move_profile %} mkdir -p ~/.dbt && cat profiles.yml >> ~/.dbt/profiles.yml {% endif %}"
+  - "{% if move_profile %} rm profiles.yml {% endif %}"
+  - "{% if init_repo %} git init {% endif %}"
+  - "{% if init_repo %} git add --all {% endif %}"
+  - "{% if init_repo %} git commit -m 'Initial commit.' {% endif %}"
+  - "{% if virtual_environment and init_repo %} source {{ virtual_environment_name }}/bin/activate && pre-commit install {% endif %}"

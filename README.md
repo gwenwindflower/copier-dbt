@@ -13,6 +13,8 @@ You will need `python3`, [`pipx`](https://github.com/pypa/pipx), and `git` insta
 - [Non-goals](#non-goals)
 - [Usage](#usage)
 - [Tips](#tips)
+  - [Learning resources](#learning-resources)
+  - [Improving the command line experience](#improving-the-command-line-experience)
 
 ## Features
 
@@ -64,7 +66,7 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 
 1. Install `copier` if you haven't already:
 
-   ```shell
+   ```bash
      pipx install copier
    ```
 
@@ -73,25 +75,50 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 
 2. Create a new dbt project from this template:
 
-   ```shell
-   copier gh:gwenwindflower/copier-dbt <path/to/project_name> --trust
+   ```bash
+    # read below re the --trust flag
+    copier gh:gwenwindflower/copier-dbt <path/to/project-name> --trust
    ```
 
    - `gh:` tells copier to use a GitHub repository as the source for the template
-   - The directory you specify is where the new project will be created, don't create it beforehand
-   - `copier` will run a series of commands to set up your project after it templates everything. These are listed in the `copier.yml` at the bottom in the `_tasks` list. I highly encourage you to look through these before and make sure you really do trust and understand them before using the `--trust` flag above that will allow them to run. These commands are very straightforward and standard, but letting somebody's code run commands on your machine should always be taken seriously. In brief they will do the following (but seriously go look at the file):
-     - Create and activate a virtual environment for the project in your newly templated project directory
-     - Install the project's dependencies
-     - Put the contents of the `profiles.yml` file in the correct place in your home directory then remove the file from your project for security
-     - Initialize a new git repo in your project and make an initial commit
-     - Install the pre-commit hooks in your project
-     - If you feel more comfortable with it, you can delete the tasks section, skip the `--trust` flag, and run the commands manually after the project is created
 
-3. Follow the prompts to configure your project, depending on your answers to certain prompts, different prompts may appear or disappear (e.g. if you choose your `data_warehouse` as `bigquery` you'll get a different set of questions to configure the `profiles.yml`).
+   - The directory you specify is where the new project will be created, you don't need to create it beforehand, but do make sure there isn't already a directory with the same name there with work you don't want to mess up
+   - 🚨 `--trust` will allow copier to _**optionally**_ run a series of commands to set up your project after it templates everything. These are listed in the `copier.yml` at the bottom in the `_tasks` list, and they're detailed below. I highly encourage you to look through these before and make sure you really do trust and understand them before using the `--trust` flag above that will allow them to run. These commands are very straightforward and standard, this is very similar to using a project's `make` commands, `dbt init`, or other build scripts, but letting somebody's code run commands on your machine should always be considered carefully. They are chunked up logically into sections which can be **opted into**, they all default to `False` (no commands run, just templating). The command chunks the template can run for you are:
+
+     - `virtual_environment` — Create and activate a virtual environment for the project in your newly templated project directory, install `uv`, compile a `requirements.txt`, and install those dependencies:
+
+       ```bash
+       python3 -m venv <virual_environment_name>
+       source <virual_environment_name>/bin/activate
+       python3 -m pip install --upgrade pip
+       python3 -m pip install uv
+       uv pip compile requirements.in -o requirements.txt
+       uv pip install -r requirements.txt
+       ```
+
+     - Put the contents of the `profiles.yml` file in the correct place in your home directory then remove the file from your project for security (again, no credentials ever get entered but in case you do edit it and put in credentials I don't want you to accidentally commit it)
+
+       ```bash
+       mkdir -p ~/.dbt && cat profiles.yml >> ~/.dbt/profiles.yml
+       rm profiles.yml
+       ```
+
+     - Initialize a new git repo in your project and make an initial commit, then install the pre-commit hooks in your project for future commits (we need a `.git` directory to install the pre-commit hooks, so we have to do this after the initial commit)
+
+       ```bash
+       git init
+       git add --all
+       git commit -m "Initial commit."
+       source/<virual_environment_name>/bin/activate && pre-commit install
+       ```
+
+   - If you feel more comfortable with it you can just clone or fork the repo, delete the tasks section, skip the `--trust` flag, and run the commands manually after the project is created — it will accomplish the same thing just with a bit more manual work — in that case the command to run copier would be `copier copy <path/to/cloned-repo> <path/to/project-name>`. As mentioned though, the tasks all default to `False` so you can opt out of any or all of them even with the `--trust` flag.
+
+3. Follow the prompts to configure your project, depending on your answers to certain prompts, different prompts may appear or disappear (e.g. if you choose your `data_warehouse` as `bigquery` you'll get a different set of questions to configure the `profiles.yml`, if you leave `virtual_environment` as `False`, we won't prompt you for a virtual environment name).
 
 4. Your project is now ready to use! `cd` into the newly created project and run:
 
-   ```shell
+   ```bash
    dbt deps
    dbt debug
    ```
@@ -101,12 +128,12 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 
 5. Start building your dbt project!
 
-- Consider using the included `dbt-codegen` package to build some initial sources and staging models from your data warehouse metadata.
-- Once you've got some models built, try running `dbt build` to run and test your models.
+   - Consider using the included `dbt-codegen` package to build some initial sources and staging models from your data warehouse metadata.
+   - Once you've got some models built, try running `dbt build` to run and test your models.
 
 6. Push it!
 
-- The setup process will have initialized a git repository for you and made an initial commit of the starting state, so you can go right ahead and push your new project to your favorite git hosting service. It will run the pre-commit hooks automatically on commit, so you don't have to worry about linting or formatting your code before you commit it.
+   - The setup process will have initialized a git repository for you and made an initial commit of the starting state, so you can go right ahead and push your new project to your favorite git hosting service. It will run the pre-commit hooks automatically on commit, so you don't have to worry about linting or formatting your code before you commit it.
 
 ## Tips
 
@@ -116,40 +143,69 @@ Before embarking on this quick journey: if your data platform has a CLI tool tha
 
 - If you decide you like `uv`, it may be a good idea to install it globally so you can use it for initializing new projects and other things. You can find the installation instructions in the [ `uv` documentation ](https://github.com/astral-sh/uv).
 
-- Always make sure you're installing Python packages in a virtual environment to avoid dependency conflicts(or using `pipx` if it really is supposed to be global). Not to be a broken record, but _yet another_ cool thing `uv` does is always install your packages into a virtual environment by default, even if it's not activated (unlike `pip`), and it will prompt you to create one if one doesn't exist yet. This comes in _super_ handy to save you from accidentally installing a project's dependencies globally.
+- Always make sure you're installing Python packages in a virtual environment to avoid dependency conflicts (or using `pipx` if it really is supposed to be global). Not to be a broken record, but _yet another_ cool thing `uv` does is always install your packages into a virtual environment by default, even if it's not activated (unlike `pip`), and it will prompt you to create one if one doesn't exist yet. This comes in _super_ handy to save you from accidentally installing a project's dependencies globally.
 
   - If you need to update any dependencies you can change the version(s) in the `requirements.in` file and run `uv pip compile requirements.in -o requirements.txt` to compile an updated `requirements.txt` file. Then run `uv pip install -r requirements.txt` to install the updated dependencies.
 
-- If you don't want use a cloud warehouse, I recommend using `duckdb` as your local warehouse. It's a really neat database that's super fast on medium-sized data and has one of the best SQL syntaxes in the game right now. It can run completely locally, but you can also easily wire it up to cloud storage like S3 or GCS, or even a cloud warehouse SaaS called [MotherDuck](https://motherduck.com/).
+- If you don't want to use a cloud warehouse, I recommend using `duckdb` as your local warehouse. It's a really neat database that's super fast on medium-sized data and has one of the best SQL syntaxes in the game right now. It can run completely locally, but you can also easily wire it up to cloud storage like S3 or GCS, or even a cloud warehouse SaaS called [MotherDuck](https://motherduck.com/).
 
-- Typing long commands is a bummer, if you plan on doing a lot of Python and dbt development, I highly recommend setting up _*aliases*_ for common commands in your shell configuration (`~/.bashrc`, `~/.zshrc`, etc.). For example, you could add the following to your shell configuration to make running dbt and python commands easier (just make sure they don't conflict with existing aliases or commands, customize to your liking!):
-  ```shell
-  export EDITOR=<your favorite text editor>
-  # dbt alias suggestions
-  alias dbtp="$EDITOR ~/.dbt/profiles.yml"
-  alias db="dbt build"
-  alias dbs="dbt build -s"
-  alias dt="dbt test"
-  alias dts="dbt test -s"
-  alias dr="dbt run"
-  alias drs="dbt run -s"
-  alias dp="dbt parse"
-  alias dmv="dbt parse && mf validate-configs"
-  # Python alias suggestions
-  alias python="python3"
-  alias venv="uv venv .venv"
-  alias va="source .venv/bin/activate"
-  alias venva="venv && va"
-  alias pi="uv pip"
-  alias pir="uv pip install -r"
-  alias pirr="uv pip install -r requirements.txt"
-  alias pc="uv pip compile requirements.in -o requirements.txt"
-  alias piup="uv pip install --upgrade pip"
-  alias vpi="venva && piup && pirr"
-  alias vpci="venva && piup && pc && pirr"
-  # Go-to your project, activate the virtual environment, and open it in your text editor
-  alias <something short and memorable>="cd <path to your project> && venva && $EDITOR ."
-  ```
-  - Notice we can use previously defined aliases in new aliases. For example, `vpci` uses `venva` and `pirr` to update the project's dependencies and install them.
+### Learning resources
+
+If you're new to dbt, SQL, or Jinja, I highly recommend the following learning resources:
+
+- [dbt Learn](https://learn.getdbt.com/) - dbt Labs' official learning platform, with a bunch of great free courses to get you started
+- [Mode's SQL Tutorial](https://mode.com/sql-tutorial) - IMO the best free resource to learn SQL from the ground up
+- [Jinja's official documentation](https://jinja.palletsprojects.com/en/3.0.x/templates/) - specifically the Template Designer Docs in the link. Jinja is a really powerful templating language that dbt and many other projects use (including `copier` i.e. this repo!). Once you get the basics of dbt and SQL down, learning Jinja will take your dbt projects to the next level.
+- [dbt Labs' **How we structure our dbt projects** guide](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview) - the standard resource covering the best way to structure your dbt projects and why. This template follows these guidelines.[^2]
+
+If you're looking to deploy the dbt project you create with this template, the best way is with [dbt Cloud](https://cloud.getdbt.com/).[^2] It includes advanced orchestration, a cloud-based IDE, an interactive visual Explorer with column-level lineage, flexible alerts, [auto-deferral](https://docs.getdbt.com/blog/defer-to-prod), version control, and a lot more. It's the best way to get a dbt project into production quickly, easily, and reliably — and to get multiple people with varied knowledge working on the same project efficiently. If you're interested in trying it out, you can [sign up for a free trial](https://getdbt.com/signup) and get started in minutes.
+
+### Improving the command line experience
+
+There are some really useful command line tools for folks developing dbt projects locally (meaning they're using SQL, Jinja, Python, and the command line a lot). Here are a few I recommend:
+
+- [`zoxide`](https://github.com/ajeetdsouza/zoxide) - a faster, easier-to-use, and more flexible replacement for the `cd` command that learns your habits and saves you a lot of typing with a combination of fuzzy search and frecency (frequency + recency) sorting of your directory changing history
+- [`rip`](https://github.com/nivekuil/rip) - a safer and easier-to-use replacement for the `rm` command that moves files to the trash instead of deleting them and lets you recover them if you make a mistake
+- [`fzf`](https://github.com/junegunn/fzf) - a fuzzy finder that makes it easy to search through your command history, files, and directories super fast
+- [`bat`](https://github.com/sharkdp/bat) - a `cat` replacement that adds syntax highlighting and line numbers, alias it to `cat` and never look back
+- [`eza`](https://github.com/eza-community/eza) - a faster and more powerful replacement for the `ls` command
+- [`fd`](https://github.com/sharkdp/fd) - a faster and easier-to-use replacement for the `find` command
+- [`ripgrep`](https://github.com/BurntSushi/ripgrep) - a much faster and more powerful replacement for the `grep` command
+- [`atuin`](https://github.com/atuinsh/atuin) - a more powerful and magical shell history tool, with fuzzy search and a lot of other cool features
+- [`starship`](https://starship.rs/) - a really cool and fast shell prompt that's highly customizable (using TOML so it's very easy and readable) and has a lot of cool features, and the default settings are great if you don't want to bother customizing it
+- [`kitty`](https://sw.kovidgoyal.net/kitty/) - a fast, feature-rich (great font, image, and mouse support, for example), and highly customizable terminal emulator that's a joy to use
+
+Typing long commands is a bummer, if you plan on doing a lot of Python and dbt development, I highly recommend setting up _*aliases*_ for common commands in your shell configuration (`~/.bashrc`, `~/.zshrc`, etc.). For example, you could add the following to your shell configuration to make running dbt and python commands easier (just make sure they don't conflict with existing aliases or commands, customize to your liking!):
+
+```bash
+export EDITOR=<your favorite text editor>
+# dbt alias suggestions
+alias dbtp="$EDITOR ~/.dbt/profiles.yml"
+alias db="dbt build"
+alias dbs="dbt build -s"
+alias dt="dbt test"
+alias dts="dbt test -s"
+alias dr="dbt run"
+alias drs="dbt run -s"
+alias dp="dbt parse"
+alias dmv="dbt parse && mf validate-configs"
+# Python alias suggestions
+alias python="python3"
+alias venv="uv venv .venv"
+alias va="source .venv/bin/activate"
+alias venva="venv && va"
+alias pi="uv pip"
+alias pir="uv pip install -r"
+alias pirr="uv pip install -r requirements.txt"
+alias pc="uv pip compile requirements.in -o requirements.txt"
+alias piup="uv pip install --upgrade pip"
+alias vpi="venva && piup && pirr"
+alias vpci="venva && piup && pc && pirr"
+# Go to your project, activate the virtual environment, and open it in your text editor
+alias <something short and memorable>="cd <path/to/project> && venva && $EDITOR ."
+```
+
+- Notice we can use previously defined aliases in new aliases. For example, `vpci` uses `venva` and `pirr` to update the project's dependencies and install them.
 
 [^1]: I've only selected the most secure and simple authentication method for each warehouse for the time being. You can manually configure more complex and specific authentication methods like password-based authentication, SSO, JSON keys, etc. in the `~/.dbt/profiles.yml` file after the setup process is complete. Wherever possible though, I've opted for _simplicity_ and _security_ — for example the configuration for BigQuery requires that you have installed the `gcloud` CLI and authenticated using OAuth through that. The Redshift authentication method is also the most secure and simple method available, using IAM roles and the `awscli`'s `~/.aws/config` credentials to authenticate. I highly recommend sticking with these methods and using these tools if it's an option.
+[^2]: I work for dbt Labs, I'm very biased! 🤷🏻‍♀️ Also I wrote the **How we structure our dbt projects** guide, so y'know, maybe a bit biased there too 😹.

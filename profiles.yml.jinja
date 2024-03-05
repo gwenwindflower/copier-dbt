@@ -3,71 +3,55 @@
   target: dev
   outputs:
     dev:
-      type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
+      type: {{ data_warehouse | lower }}
+      account: {{ account_env_var | lower }}
+      user: {{ username | lower }}
       authenticator: externalbrowser
-      database: {{ database }}
-      warehouse: {{ warehouse }}
-      schema: {{ schema }}
-      threads: {{ thread_count }}
+      database: {{ database | lower}}
+      warehouse: {{ warehouse | lower }}
+      schema: {{ schema | lower }}
+      threads: {{ thread_count}}
 {%- endif -%}
-{%- if data_warehouse == "bigquery" -%}
+{% if data_warehouse == "bigquery" %}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
       type: {{ data_warehouse }}
-      project: {{ database }}
-      dataset: {{ schema }}
+      project: {{ database | lower }}
+      dataset: {{ schema | lower }}
       method: oauth
       threads: {{ thread_count }}
 {%- endif -%}
-{%- if data_warehouse == "redshift" -%}
+{% if data_warehouse == "redshift" %}
+{{ profile_name }}:
+  target: dev
+  outputs:
+    dev:
+      # coming soon
+{%- endif -%}
+{% if data_warehouse == "duckdb" %}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
       type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
-      database: {{ database }}
-      schema: {{ schema }}
+      path: {{ duckdb_file_path | lower }}
+      database: {{ database | lower }}
+      schema: {{ schema | lower }}
       threads: {{ thread_count }}
 {%- endif -%}
-{%- if data_warehouse == "duckdb" -%}
+{% if data_warehouse == "postgres" %}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
-      type: {{ data_warehouse }}
-      path: {{ duckdb_file_path }}
+      # coming soon
 {%- endif -%}
-{%- if data_warehouse == "postgres" -%}
+{% if data_warehouse == "databricks" %}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
-      type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
-      authenticator: externalbrowser
-      database: {{ database }}
-      warehouse: {{ warehouse }}
-      schema: {{ schema }}
-      threads: {{ thread_count }}
-{%- endif -%}
-{%- if data_warehouse == "databricks" -%}
-{{ profile_name }}:
-  target: dev
-  outputs:
-    dev:
-      type: {{ data_warehouse }}
-      account: {{ account_env_var }}
-      user: {{ username }}
-      authenticator: externalbrowser
-      database: {{ database }}
-      warehouse: {{ warehouse }}
-      schema: {{ schema }}
-      threads: {{ thread_count }}
+      # coming soon
 {%- endif -%}

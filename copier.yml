@@ -196,10 +196,10 @@ _message_after_copy: |
 _tasks:
   - "{% if virtual_environment %} python3 -m venv {{ virtual_environment_name }} {% endif %}"
   - "{% if virtual_environment %} source {{ virtual_environment_name }}/bin/activate {% endif %}"
+  - "{% if virtual_environment %} python3 -m pip install --upgrade pip {% endif %}"
   - "{% if virtual_environment %} python3 -m pip install uv {% endif %}"
   - "{% if virtual_environment %} source {{ virtual_environment_name }}/bin/activate {% endif %}"
   - "{% if virtual_environment %} uv pip compile requirements.in -o requirements.txt {% endif %}"
-  - "{% if virtual_environment %} uv pip install --upgrade pip {% endif %}"
   - "{% if virtual_environment %} uv pip install -r requirements.txt {% endif %}"
   - "{% if move_profile %} mkdir -p ~/.dbt && cat profiles.yml >> ~/.dbt/profiles.yml {% endif %}"
   - "{% if move_profile %} rm profiles.yml {% endif %}"

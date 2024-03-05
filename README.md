@@ -1,5 +1,7 @@
 # 📝🖨️ copier-dbt 🧡⚙️
 
+[![CI](https://github.com/gwenwindflower/copier-dbt/actions/workflows/ci.yml/badge.svg)](https://github.com/gwenwindflower/copier-dbt/actions/workflows/ci.yml)
+
 This is a [copier](https://github.com/copier-org/copier) template for [dbt](https://getdbt.com) projects. It's useful for scaffolding out a basic project structure and configuration with modern tooling quickly.
 
 > [!NOTE]

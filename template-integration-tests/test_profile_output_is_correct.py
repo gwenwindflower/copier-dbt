@@ -50,6 +50,7 @@ def _check_profiles(warehouse):
         data=data,
         defaults=True,
         unsafe=True,
+        vcs_ref="HEAD",
     )
 
     with open(TEST_EXPECT / f"{warehouse}_profile.yml", "r") as f:

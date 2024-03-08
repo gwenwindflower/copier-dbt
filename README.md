@@ -24,13 +24,13 @@ The following features are implemented or planned:
 
 - [x] dbt [Best Practices project structure](https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview)
 - [x] Basic initial dbt Project configuration
-- [ ] Coverage of all non-password-based authentication methods for the below warehouses[^1]
-- [ ] Warehouse-aware dbt profile configuration for the following options, check out the [dbt docs on warehouse-specific profile configs](https://docs.getdbt.com/docs/core/connect-data-platform/about-core-connections) for more details:
+- [x] Coverage of all non-password-based authentication methods for the below warehouses[^1]
+- [x] Warehouse-aware dbt profile configuration for the following options, check out the [dbt docs on warehouse-specific profile configs](https://docs.getdbt.com/docs/core/connect-data-platform/about-core-connections) for more details:
   - [x] Snowflake - using `authenticator: externalbrowser` with SSO
   - [x] BigQuery - using `method: oauth` via `gcloud` CLI
-  - [ ] Databricks - using `token: <empty>`, you will need to create a personal access token in Databricks, and fill it into that field in to your `~/.dbt/profiles.yml` manually once the project is created[^1]
-  - [ ] Redshift - using `method: IAM` via `awscli`
-  - [ ] Postgres - still haven't decided the best way to handle Postgres
+  - [x] Databricks - using `token: <empty>`, you will need to create a personal access token in Databricks, and fill it into that field in to your `~/.dbt/profiles.yml` manually once the project is created[^1]
+  - [x] Redshift - using `method: IAM` via `awscli`
+  - [x] Postgres - still haven't decided the best way to handle Postgres
   - [x] DuckDB - local warehouse, no authentication required
 - [x] Linting and formatting of SQL with SQLFluff
 - [x] Configurable linting rules in the setup process

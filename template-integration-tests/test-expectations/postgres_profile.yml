@@ -1,0 +1,12 @@
+shieldmaiden_security:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5432
+      user: eowyn
+      password: "" # Add a password here if needed
+      database: rohan
+      schema: nazgul_threat_assessments
+      threads: 8

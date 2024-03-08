@@ -1,10 +1,9 @@
-
-lothlorien_enterprises:
+galadriels_mirrors_and_more:
   target: dev
   outputs:
     dev:
       type: duckdb
       path: ./lothlorien.db
-      database: mallorn
-      schema: flets
+      database: lothlorien
+      schema: mallorn_trees
       threads: 8

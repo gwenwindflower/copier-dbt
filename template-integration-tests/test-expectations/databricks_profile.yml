@@ -1,0 +1,11 @@
+faramir_landscaping:
+  target: dev
+  outputs:
+    dev:
+      type: databricks
+      catalog: tower_of_ecthelion
+      host: faramir-landscaping
+      http_path: ithilien.databricks.com
+      token: # Your Personal Access Token here
+      schema: bridal_gifts
+      threads: 8

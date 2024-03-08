@@ -5,10 +5,10 @@
     dev:
       type: {{ data_warehouse | lower }}
       account: {{ account_env_var | lower }}
-      user: {{ username | lower }}
       authenticator: externalbrowser
-      database: {{ database | lower}}
+      user: {{ username | lower }}
       warehouse: {{ warehouse | lower }}
+      database: {{ database | lower}}
       schema: {{ schema | lower }}
       threads: {{ thread_count}}
 {%- endif -%}
@@ -18,9 +18,9 @@
   outputs:
     dev:
       type: {{ data_warehouse }}
+      method: oauth
       project: {{ database | lower }}
       dataset: {{ schema | lower }}
-      method: oauth
       threads: {{ thread_count }}
 {%- endif -%}
 {% if data_warehouse == "redshift" %}
@@ -28,7 +28,17 @@
   target: dev
   outputs:
     dev:
-      # coming soon
+      type: {{ data_warehouse | lower }}
+      method: iam
+      iam_profile: {{ iam_profile | lower }}
+      region: {{ region | lower }}
+      cluster_id: {{ cluster_id | lower }}
+      host: {{ host | lower }}
+      port: {{ port | lower }}
+      user: {{ username | lower }}
+      database: {{ database | lower }}
+      schema: {{ schema | lower }}
+      threads: {{ thread_count }}
 {%- endif -%}
 {% if data_warehouse == "duckdb" %}
 {{ profile_name }}:
@@ -46,12 +56,25 @@
   target: dev
   outputs:
     dev:
-      # coming soon
+      type: {{ data_warehouse | lower }}
+      host: {{ host | lower }}
+      port: {{ port | lower }}
+      user: {{ username | lower }}
+      password: "" # Add a password here if needed
+      database: {{ database | lower }}
+      schema: {{ schema | lower }}
+      threads: {{ thread_count }}
 {%- endif -%}
 {% if data_warehouse == "databricks" %}
 {{ profile_name }}:
   target: dev
   outputs:
     dev:
-      # coming soon
+      type: {{ data_warehouse | lower }}
+      {% if using_unity_catalog -%}catalog: {{ catalog | lower }}{%- endif %}
+      host: {{ host | lower }}
+      http_path: {{ http_path | lower }}
+      token: # Your Personal Access Token here
+      schema: {{ schema | lower }}
+      threads: {{ thread_count }}
 {%- endif -%}

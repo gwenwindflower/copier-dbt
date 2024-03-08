@@ -6,10 +6,11 @@ project_name:
 
 project_slug:
   type: str
-  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') | replace('.', '') }}"
+  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') | replace('.', '') | replace(\"'\", '')}}"
   help: The slugified name of your project.
 
-# Warehouse profile connection configs
+# Warehouse profile connection shared configs
+# All configs that are shared by more than one warehouse
 profile_name:
   type: str
   default: "{{ project_slug }}"
@@ -29,25 +30,28 @@ data_warehouse:
     - postgres
     - duckdb
 
-username:
-  type: str
-  help: The username you log in to your database with.
-  when: "{{ data_warehouse in ['snowflake'] }}"
-
 database:
   type: str
   help: |
     The name or id of the database (or project in BigQuery) *within* your data platform that you want to build into.
+  when: "{{ data_warehouse in [ 'snowflake', 'bigquery', 'duckdb' ] }}"
 
 schema:
   type: str
   help: |
     The name of the schema (or dataset in BigQuery) in the database you want to build into.
 
-thread_count:
+host:
+  type: str
+  help: |
+    The URL string of the database host — don't include 'https://'.
+  when: "{{ data_warehouse in [ 'databricks', 'redshift', 'postgres' ] }}"
+
+port:
   type: int
-  default: 8
-  help: How many threads you want to dbt to run in parallel?
+  help: |
+    The port number on your database host to connect to.
+  when: "{{ data_warehouse in [ 'redshift', 'postgres' ] }}"
 
 # Snowflake-specific configs
 account_id:
@@ -69,14 +73,51 @@ warehouse:
   help: The name of your default development compute warehouse.
   when: "{{ data_warehouse == 'snowflake' }}"
 
+username:
+  type: str
+  help: The username you log in to your database with. This may be an email address or a plain string.
+  when: "{{ data_warehouse in [ 'snowflake', 'redshift', 'postgres' ] }}"
+
 # BigQuery specific configs
-# There are none for now! `oauth` with `gcloud` is great.
+# None for now!
 
 # Databricks specific configs
+using_unity_catalog:
+  type: bool
+  default: False
+  help: Are you using Datbricks Unity Catalog?
+  when: "{{ data_warehouse == 'databricks' }}"
+
+catalog:
+  type: str
+  help: Optional catalog name if you're using Unity Catalog.
+  when: "{{ using_unity_catalog }}"
+
+http_path:
+  type: str
+  help: The http path to your SQL Warehouse or all-purpose cluster.
+  when: "{{ data_warehouse == 'databricks' }}"
 
 # Redshift specific configs
+cluster_id:
+  type: str
+  help: The id of your warehouse cluster.
+  when: "{{ data_warehouse == 'redshift' }}"
+
+iam_profile:
+  type: str
+  default: default
+  help: The name of the profile to use for connection.
+  when: "{{ data_warehouse == 'redshift' }}"
+
+region:
+  type: str
+  default: "us-east-1"
+  help: The region to connect your IAM profile through.
+  when: "{{ data_warehouse == 'redshift' }}"
 
 # Postgres specific configs
+# None for now!
 
 # DuckDB specific configs
 duckdb_file_path:
@@ -86,6 +127,12 @@ duckdb_file_path:
     Where do you want to build your duckdb database file? 
     Strongly suggest the default, which will be automatically gitignored.
   when: "{{ data_warehouse == 'duckdb' }}"
+
+# dbt development configs
+thread_count:
+  type: int
+  default: 8
+  help: How many threads you want to dbt to run in parallel?
 
 # Formatting configs
 tab_space_size:

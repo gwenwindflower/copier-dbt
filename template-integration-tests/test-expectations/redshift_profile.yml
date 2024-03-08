@@ -1,0 +1,15 @@
+gimli_mining:
+  target: dev
+  outputs:
+    dev:
+      type: redshift
+      method: iam
+      iam_profile: default
+      region: us-east-1
+      cluster_id: legolas-bff-4eva
+      host: gimli-mining.us-east-1.redshift.amazonaws.com
+      port: 5439
+      user: gimli_son_of_gloin
+      database: ores
+      schema: mithril
+      threads: 8

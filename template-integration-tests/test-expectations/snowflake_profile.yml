@@ -1,13 +1,12 @@
-
 aragorn_inc:
   target: dev
   outputs:
     dev:
       type: snowflake
-      account: 
-      user: strider
+      account:
       authenticator: externalbrowser
-      database: gondor
+      user: strider
       warehouse: narsil
+      database: dunedain
       schema: rangers
       threads: 8
